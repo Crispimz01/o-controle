@@ -1,5 +1,11 @@
-<title>O Controle — a copy que vende</title>
+<title>Patocopyzada</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Patocopyzada">
+<meta name="application-name" content="Patocopyzada">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0e1c12">
 <style>
 :root{
   --ground:#ece2cc; --panel:#f8f2e3; --panel-2:#f2ebd8; --line:#d9cbac; --line-2:#c8b78f;
@@ -284,14 +290,41 @@ section{margin-top:8px}
 #lockbtn{margin-top:11px;width:100%;border:none;background:var(--brass);color:#faf3e2;border-radius:6px;
   padding:13px;font-family:var(--serif);font-weight:600;font-size:15px;cursor:pointer}
 .lockerr{font-family:var(--mono);font-size:11px;color:var(--crit);margin-top:11px;min-height:15px}
+
+/* ---------- ABAS + FEITAS ---------- */
+.wrap{padding-bottom:104px}
+.view[hidden]{display:none}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;justify-content:center;gap:10px;
+  background:color-mix(in srgb,var(--panel) 90%,transparent);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom))}
+.tb{flex:1;max-width:170px;border:none;background:transparent;color:var(--muted);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;border-radius:9px;font-size:17px}
+.tb span{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+.tb.active{color:var(--brass);background:var(--brass-soft)}
+.check{width:30px;height:30px;flex:none;border-radius:50%;border:1.5px solid var(--line-2);background:transparent;
+  color:var(--good);font-size:15px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:.15s}
+.check.on{background:var(--good-bg);border-color:var(--good)}
+.check:hover{border-color:var(--good)}
+.dem.done{opacity:.72}
+.dem.done .t{text-decoration:line-through;color:var(--muted)}
+.feitas-list .fdone{padding:9px 2px;border-bottom:1px dotted var(--line);font-family:var(--serif);font-size:14px;display:flex;align-items:center;gap:9px}
+.feitas-list .fdone:last-child{border-bottom:none}
+.hist-days{display:grid;gap:11px}
+.histday>summary{list-style:none;cursor:pointer;padding:13px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.histday>summary::-webkit-details-marker{display:none}
+.histday>summary b{font-family:var(--serif);font-size:15px}
+.histday[open]>summary{border-bottom:1px solid var(--line)}
+.histbody{padding:12px 15px;display:grid;gap:8px}
+.hrow{font-family:var(--serif);font-size:13.5px;color:var(--faint);display:flex;align-items:center;gap:8px}
+.hrow.hdone{color:var(--ink)}
 </style>
 
 <script>(function(){try{var p=localStorage.getItem("controle_palette_v1");if(p)document.documentElement.setAttribute("data-palette",p);}catch(e){}})();</script>
 
 <div id="lock">
   <div class="lockcard">
-    <div class="lockmark">C</div>
-    <div class="lockt">O&nbsp;Controle</div>
+    <div class="lockmark">🦆</div>
+    <div class="lockt">Patocopyzada</div>
     <div class="locks">acesso restrito</div>
     <input id="lockin" type="password" inputmode="numeric" placeholder="senha" aria-label="senha" autocomplete="off">
     <button id="lockbtn">entrar</button>
@@ -317,7 +350,7 @@ section{margin-top:8px}
       <g class="wing"><path d="M92 118 q36 -12 62 0 q-9 28 -32 28 q-24 0 -30 -28z" fill="#f2b71f" stroke="#d99b10" stroke-width="1.5"/></g>
     </svg>
     <div class="count" id="count">$ 0</div>
-    <div class="stitle">O&nbsp;Controle</div>
+    <div class="stitle">Patocopyzada</div>
     <div class="ssub">contando a grana…</div>
   </div>
 </div>
@@ -326,13 +359,14 @@ section{margin-top:8px}
   <!-- COVER -->
   <div class="cover anim">
     <div class="palettes" id="palettes" aria-label="cores"></div>
-    <div class="seal">C</div>
+    <div class="seal">🦆</div>
     <div class="kw"><span>· direct response ·</span></div>
-    <h1>O&nbsp;Controle</h1>
-    <div class="sub">todo anúncio quer virar controle</div>
+    <h1>Patocopyzada</h1>
+    <div class="sub">a copy que faz o pato contar</div>
     <div class="ledger" id="dater">—</div>
   </div>
 
+  <div class="view" id="view-hoje">
   <div class="kpis" id="kpis"></div>
 
   <div class="fleuron"><span>❧</span></div>
@@ -391,6 +425,23 @@ section{margin-top:8px}
 
   <div class="fleuron"><span>❦</span></div>
   <div class="foot" id="src">— eu &amp; você · dados reais do ClickUp —</div>
+  </div><!-- /view-hoje -->
+
+  <div class="view" id="view-feitas" hidden>
+    <section>
+      <div class="shead"><span class="rn">✓</span><h2>Feitas hoje</h2><span class="meta" id="feitasje">—</span></div>
+      <div class="card framed" style="padding:15px"><div id="feitas-hoje" class="feitas-list"></div></div>
+    </section>
+    <section>
+      <div class="shead"><span class="rn">✦</span><h2>Histórico por dia</h2><span class="meta">o que tu teve e fez</span></div>
+      <div class="hist-days" id="hist-days"></div>
+    </section>
+  </div>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tb active" data-view="hoje">🎯<span>Hoje</span></button>
+    <button class="tb" data-view="feitas">✓<span>Feitas</span></button>
+  </nav>
 </div>
 
 <script>
@@ -465,11 +516,53 @@ document.getElementById("dater").textContent="⟡  atualizado "+DATA.updated+"  
 const kw=document.getElementById("kpis");
 DATA.kpis.forEach(k=>{const c=el("div","kpi");c.innerHTML=`<span class="tag ${k.t}"></span><div class="lab">${k.lab}</div><div class="big">${k.big}</div><div class="sub">${k.sub}</div>`;kw.appendChild(c)});
 
-const dw=document.getElementById("demandas");
-document.getElementById("wc").textContent=DATA.escrevendo.length+" abertas";
-DATA.escrevendo.forEach(d=>{const r=el("div","dem");
-  r.innerHTML=`<div class="nlab">${d.nicho}</div><div class="body"><div class="t">${d.nm}</div><div class="m">${d.of} · ${d.nota}</div></div><div class="ember" title="escrevendo"></div>`;
-  dw.appendChild(r)});
+/* ---- Demandas + marcar feito + log diário ---- */
+const FEITO="controle_feito_v1", DIAS="controle_dias_v1";
+function jget(k){try{return JSON.parse(localStorage.getItem(k))||{}}catch(e){return{}}}
+function jset(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function demId(d){return (d.nicho+"-"+d.nm).toLowerCase().replace(/[^a-z0-9]+/g,"-")}
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function ptDay(k){const p=k.split("-"),dias=["dom","seg","ter","qua","qui","sex","sáb"];const dt=new Date(+p[0],+p[1]-1,+p[2]);return dias[dt.getDay()]+" "+p[2]+"/"+p[1]}
+
+/* snapshot: registra as demandas que ele TEVE hoje */
+(function(){const dias=jget(DIAS),t=today();if(!dias[t])dias[t]={tidas:[],feitas:[]};
+  const ids=dias[t].tidas.map(x=>x.id);
+  DATA.escrevendo.forEach(d=>{const id=demId(d);if(ids.indexOf(id)<0)dias[t].tidas.push({id,nm:d.nm,nicho:d.nicho})});
+  jset(DIAS,dias);})();
+
+function toggleFeito(d){
+  const id=demId(d),feito=jget(FEITO),dias=jget(DIAS),t=today();
+  if(!dias[t])dias[t]={tidas:[],feitas:[]};
+  if(feito[id]){delete feito[id];dias[t].feitas=dias[t].feitas.filter(x=>x.id!==id)}
+  else{feito[id]=true;if(!dias[t].feitas.some(x=>x.id===id))dias[t].feitas.push({id,nm:d.nm,nicho:d.nicho})}
+  jset(FEITO,feito);jset(DIAS,dias);renderDemandas();renderFeitas();
+}
+function renderDemandas(){
+  const dw=document.getElementById("demandas"),feito=jget(FEITO);dw.innerHTML="";let nf=0;
+  DATA.escrevendo.forEach(d=>{const id=demId(d),done=!!feito[id];if(done)nf++;
+    const r=el("div","dem"+(done?" done":""));
+    r.innerHTML=`<div class="nlab">${d.nicho}</div>
+      <div class="body"><div class="t">${d.nm}</div><div class="m">${d.of} · ${d.nota}</div></div>
+      <button class="check${done?" on":""}" aria-label="marcar feito">${done?"✓":""}</button>`;
+    r.querySelector(".check").onclick=()=>toggleFeito(d);
+    dw.appendChild(r);
+  });
+  document.getElementById("wc").textContent=(DATA.escrevendo.length-nf)+" abertas · "+nf+" feitas";
+}
+function renderFeitas(){
+  const dias=jget(DIAS),t=today(),cur=dias[t]||{tidas:[],feitas:[]};
+  document.getElementById("feitasje").textContent=cur.feitas.length+"/"+cur.tidas.length;
+  const fh=document.getElementById("feitas-hoje");
+  fh.innerHTML=cur.feitas.length?cur.feitas.map(x=>`<div class="fdone"><span class="pill p-good">✓ ${x.nicho}</span> ${x.nm}</div>`).join("")
+    :'<div class="reuempty">Nada marcado hoje ainda. Toca no ✓ das demandas na aba Hoje.</div>';
+  const hd=document.getElementById("hist-days"),keys=Object.keys(dias).sort().reverse();
+  hd.innerHTML=keys.map(k=>{const dd=dias[k];
+    return `<details class="card framed histday"><summary><b>${ptDay(k)}</b> <span class="mini">${dd.feitas.length}/${dd.tidas.length} feitas</span></summary>
+      <div class="histbody">${dd.tidas.map(x=>{const done=dd.feitas.some(f=>f.id===x.id);
+        return `<div class="hrow ${done?'hdone':''}">${done?'✓':'○'} <span class="pill p-mut">${x.nicho}</span> ${x.nm}</div>`}).join("")||'<div class="mini">sem registro</div>'}</div>
+    </details>`}).join("");
+}
+renderDemandas();renderFeitas();
 
 const nw=document.getElementById("nichos");
 DATA.nichos.forEach((n,i)=>{
@@ -590,4 +683,25 @@ applyPal(curPal());renderPals();
 
 /* reveal stagger */
 document.querySelectorAll(".anim").forEach((n,i)=>{n.style.animationDelay=(i*70)+"ms"});
+
+/* Abas (Hoje / Feitas) */
+document.querySelectorAll(".tb").forEach(b=>b.onclick=()=>{
+  const v=b.dataset.view;
+  document.querySelectorAll(".tb").forEach(x=>x.classList.toggle("active",x===b));
+  document.querySelectorAll(".view").forEach(el=>{el.hidden=(el.id!=="view-"+v)});
+  window.scrollTo(0,0);
+});
+
+/* Ícone do app (foto de perfil) — pato numa moeda verde/ouro, gerado na hora */
+(function(){try{
+  const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");
+  const g=x.createLinearGradient(0,0,180,180);g.addColorStop(0,"#0e1c12");g.addColorStop(1,"#2f8d57");
+  x.fillStyle=g;x.fillRect(0,0,180,180);
+  x.strokeStyle="#e2b65e";x.lineWidth=7;x.strokeRect(9,9,162,162);
+  x.font="112px 'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',system-ui,sans-serif";
+  x.textAlign="center";x.textBaseline="middle";x.fillText("🦆",90,98);
+  const url=c.toDataURL("image/png");
+  function setIcon(rel){let l=document.querySelector("link[rel='"+rel+"']");if(!l){l=document.createElement("link");l.rel=rel;document.head.appendChild(l);}l.href=url;}
+  setIcon("apple-touch-icon");setIcon("apple-touch-icon-precomposed");setIcon("icon");
+}catch(e){}})();
 </script>
