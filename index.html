@@ -326,7 +326,7 @@ section{margin-top:8px}
     <div class="lockmark">🦆</div>
     <div class="lockt">Patocopyzada</div>
     <div class="locks">acesso restrito</div>
-    <input id="lockin" type="password" inputmode="numeric" placeholder="senha" aria-label="senha" autocomplete="off">
+    <input id="lockin" type="password" placeholder="senha" aria-label="senha" autocomplete="off" autocapitalize="off">
     <button id="lockbtn">entrar</button>
     <div class="lockerr" id="lockerr"></div>
   </div>
@@ -634,7 +634,7 @@ setInterval(checkDue,30000);checkDue();
 
 /* Acesso (senha padrão: 2026 — troca aqui em CODE) */
 (function(){
-  const LCK="controle_unlocked_v1",CODE="2026",lk=document.getElementById("lock");if(!lk)return;
+  const LCK="controle_unlocked_v2",CODE="Copy2026",lk=document.getElementById("lock");if(!lk)return;
   let ok=false;try{ok=localStorage.getItem(LCK)==="1"}catch(e){}
   if(ok){lk.classList.add("hidden");return}
   function go(){const v=(document.getElementById("lockin").value||"").trim();
